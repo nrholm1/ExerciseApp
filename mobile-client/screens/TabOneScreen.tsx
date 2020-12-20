@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
+import Analytics from '../components/Analytics';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function TabOneScreen() {
@@ -9,7 +9,7 @@ export default function TabOneScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Analytics</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <Analytics />
     </View>
   );
 }
