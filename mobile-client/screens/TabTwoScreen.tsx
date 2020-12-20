@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import ExerciseCard from '../components/ExcerciseCard';
+import ExerciseList from '../components/ExerciseList';
 
 import Programs from '../components/Programs';
 import { Text, View } from '../components/Themed';
@@ -11,7 +12,7 @@ export default function TabTwoScreen() {
       <Text style={styles.title}>Workout Programmes</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Programs />
-      <ExerciseCard />
+      <ExerciseList />
     </View>
   );
 }
