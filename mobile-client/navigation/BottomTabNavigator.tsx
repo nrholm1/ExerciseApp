@@ -17,24 +17,24 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Analytics"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Analytics"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="analytics-outline" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Programmes"
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="barbell-outline" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabThree"
+        name="MyPage"
         component={TabThreeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="happy-outline" color={color} />,
@@ -58,9 +58,9 @@ function TabOneNavigator() {
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
-        name="TabOneScreen"
+        name="Analytics"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerTitle: 'Analytics' }}
       />
     </TabOneStack.Navigator>
   );
@@ -72,9 +72,9 @@ function TabTwoNavigator() {
   return (
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
-        name="TabTwoScreen"
+        name="Programmes"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Workout Programmes' }}
       />
     </TabTwoStack.Navigator>
   );
@@ -86,9 +86,9 @@ function TabThreeNavigator() {
   return (
     <TabThreeStack.Navigator>
       <TabThreeStack.Screen
-        name="TabThreeScreen"
+        name="MyPage"
         component={TabThreeScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'My Page' }}
       />
     </TabThreeStack.Navigator>
   );
