@@ -1,7 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'expo';
 import * as React from 'react';
+import { Button, View } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import AddButton from '../components/AddButton';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -44,8 +48,6 @@ export default function BottomTabNavigator() {
   );
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
@@ -60,7 +62,10 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="Analytics"
         component={TabOneScreen}
-        options={{ headerTitle: 'Analytics' }}
+        options={{ headerTitle: 'Analytics',
+                   headerRight: ({ color }) => (
+                      <AddButton color={color} />
+                    )}}
       />
     </TabOneStack.Navigator>
   );

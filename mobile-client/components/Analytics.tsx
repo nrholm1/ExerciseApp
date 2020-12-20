@@ -1,5 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
+import { Icon } from 'expo';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableHighlight } from 'react-native';
 
 import { Text, View } from './Themed';
 
@@ -14,6 +16,7 @@ export default function Analytics() {
           Analytics component works!
         </Text>
 
+        
 
         <Text
           style={styles.getStartedText}
