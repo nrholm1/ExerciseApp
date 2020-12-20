@@ -62,10 +62,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="Analytics"
         component={TabOneScreen}
-        options={{ headerTitle: 'Analytics',
-                   headerRight: ({ color }) => (
-                      <AddButton color={color} />
-                    )}}
+        options={{ headerTitle: 'Analytics' }}
       />
     </TabOneStack.Navigator>
   );
@@ -79,7 +76,10 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="Programmes"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Workout Programmes' }}
+        options={{ headerTitle: 'Workout Programmes',
+                    headerRight: ({ color }) => (
+                      <AddButton color={color} style={{margin: 3, marginRight: 12}}/>
+                    )}}
       />
     </TabTwoStack.Navigator>
   );
