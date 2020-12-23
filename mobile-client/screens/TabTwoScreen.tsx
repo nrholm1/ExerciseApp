@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import ExerciseCard from '../components/ExcerciseCard';
 import ExerciseList from '../components/ExerciseList';
 
 import Programs from '../components/Programs';

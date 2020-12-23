@@ -1,10 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Text } from 'react-native';
-import { Card, ListItem, Button, Icon } from 'react-native-elements';
+import ExerciseCard from './ExcerciseCard';
 
 import { Exercise } from '../models/Exercise';
 import { View } from "./Themed";
+import { FlatList, Text } from "react-native";
 
 const _exercises: Exercise[] = [
     {
@@ -30,14 +30,13 @@ const _exercises: Exercise[] = [
     }
 ];
 
-export default function ExerciseCard() {
-    return (<View>
-            {
-            _exercises.map((u, i) => {
-                    return ( 
-                        <ExerciseCard />
-                    );
-            })}
-            </View>
-                    );
-        }
+export default function ExerciseList() {
+    return (
+        <View>
+          <FlatList
+            data={_exercises}
+            renderItem={({item}) => <ExerciseCard ex={item}/>}
+          />
+        </View>
+      );
+}
