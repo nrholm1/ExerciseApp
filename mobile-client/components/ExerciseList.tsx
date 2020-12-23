@@ -35,7 +35,8 @@ export default function ExerciseList() {
         <View>
           <FlatList
             data={_exercises}
-            renderItem={({item}) => <ExerciseCard ex={item}/>}
+            renderItem={({item}) => <ExerciseCard ex={item} />}
+            keyExtractor={(item) => item.id.toString()}
           />
         </View>
       );
