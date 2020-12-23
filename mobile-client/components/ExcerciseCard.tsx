@@ -9,7 +9,7 @@ import { View } from "./Themed";
 export default function ExerciseCard(props: {ex: Exercise}) {
     return (
     <Card>
-        <Card.Title>{props.ex.id}. {props.ex.name}</Card.Title>
+        <Card.Title style={{textAlign: "left"}}>{props.ex.id}. {props.ex.name}</Card.Title>
         <Card.Divider/>
             <View> 
                 <Text>
