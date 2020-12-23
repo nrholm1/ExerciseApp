@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text } from 'react-native';
-import { Card, ListItem, Button, Icon } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 
 import { Exercise } from '../models/Exercise';
 import { View } from "./Themed";

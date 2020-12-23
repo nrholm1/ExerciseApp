@@ -4,7 +4,7 @@ import ExerciseCard from './ExcerciseCard';
 
 import { Exercise } from '../models/Exercise';
 import { View } from "./Themed";
-import { FlatList, Text } from "react-native";
+import { FlatList } from "react-native";
 
 const _exercises: Exercise[] = [
     {
