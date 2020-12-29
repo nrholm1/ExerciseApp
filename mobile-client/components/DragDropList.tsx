@@ -4,7 +4,7 @@ import ExerciseCard from './ExcerciseCard';
 
 import { Exercise } from '../models/Exercise';
 import { View } from "./Themed";
-import { FlatList, Text } from "react-native";
+import { FlatList, Text, PanResponder, PanResponderInstance } from "react-native";
 
 const _exercises: Exercise[] = [
     {
@@ -24,6 +24,20 @@ const _exercises: Exercise[] = [
     {
         id: 3,
         name: "Deadlift",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 4,
+        name: "Pullup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 5,
+        name: "Pushup",
         description: "Straight, rigid back, lift bar up and down - for back",
         exerciseType: "Compound",
         difficulty: 6
@@ -48,15 +62,41 @@ export default class DragDropList extends React.Component {
         })
     };
 
+    _panResponder: PanResponderInstance;
+
     constructor(props: any) {
         super(props);
+        
+        this._panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: (evt, gestureState) => true,
+            onStartShouldSetPanResponderCapture: (evt, gestureState) =>
+              true,
+            onMoveShouldSetPanResponder: (evt, gestureState) => true,
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) =>
+              true,
+      
+            onPanResponderGrant: (evt, gestureState) => {
+            },
+            onPanResponderMove: (evt, gestureState) => {
+                console.log(gestureState.moveY);
+            },
+            onPanResponderTerminationRequest: (evt, gestureState) =>
+                false,
+            onPanResponderRelease: (evt, gestureState) => {
+            },
+            onPanResponderTerminate: (evt, gestureState) => {
+            },
+            onShouldBlockNativeResponder: (evt, gestureState) => {
+              return true;
+            }
+          })
     }
 
     render() {
         const { data } = this.state;
 
         return (
-            <View style={{width:"100%"}}>
+            <View style={{width:"100%", minHeight: "50%"}}>
                 <FlatList
                     data={_exercises}
                     renderItem={({item}) => 
@@ -64,17 +104,18 @@ export default class DragDropList extends React.Component {
                         backgroundColor: colorMap[item.id - 1],
                         padding: 3
                         }}>
-                        <View style={{
+                        <View {...this._panResponder.panHandlers}
+                        style={{
                             padding: 3,
                             backgroundColor: colorMap[item.id - 1],
                             flexDirection: "row"
                         }}>
-                            <Text>@</Text>
+                            <Text style={{fontSize: 22}}>@</Text>
                         </View>
                         <Text style={{
                             textAlign: "center",
                             flex: 1
-                        }}>{item.id} {item.name}</Text>
+                        }}>{item.id}. {item.name}</Text>
                     </View>    
                 }
                     keyExtractor={(item) => item.id.toString()}
