@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import Analytics from '../components/Analytics';
 
 import { Text, View } from '../components/Themed';
+import DragDropList from '../components/DragDropList';
 
 export default function TabOneScreen() {
   return (
@@ -10,6 +11,7 @@ export default function TabOneScreen() {
       <Text style={styles.title}>Analytics</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Analytics />
+      <DragDropList />
     </View>
   );
 }

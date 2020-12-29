@@ -1,10 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Icon } from 'expo';
 import * as React from 'react';
-import { Button, View } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import AddButton from '../components/AddButton';
 
 import Colors from '../constants/Colors';

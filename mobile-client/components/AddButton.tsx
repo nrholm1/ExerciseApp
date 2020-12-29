@@ -10,7 +10,8 @@ export default function Analytics(props: { color: string, style: StyleProp<TextS
                     <View>
                         <Ionicons size={30}                         
                                 name="add-circle-outline" 
-                                {...props}/>
+                                {...props}
+                        />
                     </View>
     </TouchableHighlight>
     );
