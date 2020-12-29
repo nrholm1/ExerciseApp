@@ -82,7 +82,14 @@ export default class DragDropList extends React.Component {
             },
             onPanResponderMove: (evt, gestureState) => {
                 this.point.setOffset({x: 0, y: -350}); // hardcoded, but should be dynamic :)
-                console.log(this.point.getLayout().top);
+                if (Object.values(this.point.getLayout().top.valueOf())[2]-350 < 0) {
+                    console.log("boi" + (Object.values(this.point.getLayout().top.valueOf())[2] - 350));
+                    this.point.setValue({x: 0, y: 350});
+                    return;
+                } else if (Object.values(this.point.getLayout().top.valueOf())[2]-350  === 0) {
+                    // handle "edge case"
+                }
+                console.log("bitch" + (Object.values(this.point.getLayout().top.valueOf())[2] - 350));
                 Animated.event([{y: this.point.y}],
                                 {useNativeDriver: false})
                               ({y: gestureState.moveY});
@@ -129,7 +136,7 @@ export default class DragDropList extends React.Component {
                 <Animated.View style={{ backgroundColor: "black", 
                                         zIndex: 2,
                                         top: this.point.getLayout().top}}>
-                    {renderItem({item: _exercises[3]})}
+                    {renderItem({item: _exercises[2]})}
                 </Animated.View>
                 <FlatList
                     scrollEnabled={!dragging}
