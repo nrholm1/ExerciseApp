@@ -4,7 +4,7 @@ import ExerciseCard from './ExcerciseCard';
 
 import { Exercise } from '../models/Exercise';
 import { View } from "./Themed";
-import { FlatList, Text, PanResponder, PanResponderInstance } from "react-native";
+import { FlatList, Text, PanResponder, PanResponderInstance, Animated } from "react-native";
 
 const _exercises: Exercise[] = [
     {
@@ -59,10 +59,12 @@ export default class DragDropList extends React.Component {
         data: _exercises.map((_, i) => {
             colorMap[i] = getRandomColor();
             return i;
-        })
+        }),
+        dragging: false
     };
 
     _panResponder: PanResponderInstance;
+    point = new Animated.ValueXY();
 
     constructor(props: any) {
         super(props);
@@ -76,13 +78,20 @@ export default class DragDropList extends React.Component {
               true,
       
             onPanResponderGrant: (evt, gestureState) => {
+                this.setState({ dragging: true });
             },
             onPanResponderMove: (evt, gestureState) => {
-                console.log(gestureState.moveY);
+                this.point.setOffset({x: 0, y: -350}); // hardcoded, but should be dynamic :)
+                console.log(this.point.getLayout().top);
+                Animated.event([{y: this.point.y}],
+                                {useNativeDriver: false})
+                              ({y: gestureState.moveY});
             },
             onPanResponderTerminationRequest: (evt, gestureState) =>
                 false,
             onPanResponderRelease: (evt, gestureState) => {
+                // console.log("lol");
+                // this.setState({ dragging: false });
             },
             onPanResponderTerminate: (evt, gestureState) => {
             },
@@ -93,31 +102,39 @@ export default class DragDropList extends React.Component {
     }
 
     render() {
-        const { data } = this.state;
+        const { data, dragging } = this.state;
+
+        const renderItem = ({ item }: any) => (
+            <View style={{
+                backgroundColor: colorMap[item.id - 1],
+                padding: 3
+                }}>
+                <View {...this._panResponder.panHandlers}
+                style={{
+                    padding: 3,
+                    backgroundColor: colorMap[item.id - 1],
+                    flexDirection: "row"
+                }}>
+                    <Text style={{fontSize: 22}}>@</Text>
+                </View>
+                <Text style={{
+                    textAlign: "center",
+                    flex: 1
+                }}>{item.id}. {item.name}</Text>
+            </View>    
+        );
 
         return (
             <View style={{width:"100%", minHeight: "50%"}}>
+                <Animated.View style={{ backgroundColor: "black", 
+                                        zIndex: 2,
+                                        top: this.point.getLayout().top}}>
+                    {renderItem({item: _exercises[3]})}
+                </Animated.View>
                 <FlatList
+                    scrollEnabled={!dragging}
                     data={_exercises}
-                    renderItem={({item}) => 
-                    <View style={{
-                        backgroundColor: colorMap[item.id - 1],
-                        padding: 3
-                        }}>
-                        <View {...this._panResponder.panHandlers}
-                        style={{
-                            padding: 3,
-                            backgroundColor: colorMap[item.id - 1],
-                            flexDirection: "row"
-                        }}>
-                            <Text style={{fontSize: 22}}>@</Text>
-                        </View>
-                        <Text style={{
-                            textAlign: "center",
-                            flex: 1
-                        }}>{item.id}. {item.name}</Text>
-                    </View>    
-                }
+                    renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
                 />
             </View>
