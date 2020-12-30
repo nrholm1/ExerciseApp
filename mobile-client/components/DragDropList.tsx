@@ -81,18 +81,22 @@ export default class DragDropList extends React.Component {
                 this.setState({ dragging: true });
             },
             onPanResponderMove: (evt, gestureState) => {
-                this.point.setOffset({x: 0, y: -350}); // hardcoded, but should be dynamic :)
-                if (Object.values(this.point.getLayout().top.valueOf())[2]-350 < 0) {
-                    console.log("boi" + (Object.values(this.point.getLayout().top.valueOf())[2] - 350));
-                    this.point.setValue({x: 0, y: 350});
-                    return;
-                } else if (Object.values(this.point.getLayout().top.valueOf())[2]-350  === 0) {
-                    // handle "edge case"
-                }
-                console.log("bitch" + (Object.values(this.point.getLayout().top.valueOf())[2] - 350));
+                const offset: number = 350;
+                this.point.setOffset({x: 0, y: -offset}); // hardcoded, but should be dynamic :)
+
+                // log y
+                // console.log(gestureState.moveY);
+
+                let moveY;
+                if (gestureState.moveY - offset >= 0)
+                    moveY = gestureState.moveY;
+                else
+                    moveY = offset;
+
                 Animated.event([{y: this.point.y}],
-                                {useNativeDriver: false})
-                              ({y: gestureState.moveY});
+                    {useNativeDriver: false})
+                    ({y: moveY});
+                
             },
             onPanResponderTerminationRequest: (evt, gestureState) =>
                 false,
@@ -114,19 +118,20 @@ export default class DragDropList extends React.Component {
         const renderItem = ({ item }: any) => (
             <View style={{
                 backgroundColor: colorMap[item.id - 1],
-                padding: 3
+                padding: 3,
+                flexDirection: "row"
                 }}>
                 <View {...this._panResponder.panHandlers}
                 style={{
                     padding: 3,
                     backgroundColor: colorMap[item.id - 1],
-                    flexDirection: "row"
+                    flex: 3
                 }}>
                     <Text style={{fontSize: 22}}>@</Text>
                 </View>
                 <Text style={{
                     textAlign: "center",
-                    flex: 1
+                    flex: 60
                 }}>{item.id}. {item.name}</Text>
             </View>    
         );
@@ -136,7 +141,7 @@ export default class DragDropList extends React.Component {
                 <Animated.View style={{ backgroundColor: "black", 
                                         zIndex: 2,
                                         top: this.point.getLayout().top}}>
-                    {renderItem({item: _exercises[2]})}
+                    {renderItem({item: _exercises[3]})}
                 </Animated.View>
                 <FlatList
                     scrollEnabled={!dragging}
