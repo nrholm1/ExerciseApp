@@ -8,9 +8,9 @@ import DragDropList from '../components/DragDropList';
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Analytics</Text>
+      {/* <Text style={styles.title}>Analytics</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Analytics />
+      <Analytics /> */}
       <DragDropList />
     </View>
   );

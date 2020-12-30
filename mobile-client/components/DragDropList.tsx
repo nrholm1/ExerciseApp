@@ -41,6 +41,111 @@ const _exercises: Exercise[] = [
         description: "Straight, rigid back, lift bar up and down - for back",
         exerciseType: "Compound",
         difficulty: 6
+    },
+    {
+        id: 6,
+        name: "Bench Press",
+        description: "Press on bench - for pecs",
+        exerciseType: "Compound",
+        difficulty: 5
+    },
+    {
+        id: 7,
+        name: "Squat",
+        description: "Sit down with a bar on the shoulders - for legs",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 8,
+        name: "Deadlift",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 9,
+        name: "Pullup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 10,
+        name: "Pushup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 11,
+        name: "Bench Press",
+        description: "Press on bench - for pecs",
+        exerciseType: "Compound",
+        difficulty: 5
+    },
+    {
+        id: 12,
+        name: "Squat",
+        description: "Sit down with a bar on the shoulders - for legs",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 13,
+        name: "Deadlift",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 14,
+        name: "Pullup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 15,
+        name: "Pushup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 16,
+        name: "Bench Press",
+        description: "Press on bench - for pecs",
+        exerciseType: "Compound",
+        difficulty: 5
+    },
+    {
+        id: 17,
+        name: "Squat",
+        description: "Sit down with a bar on the shoulders - for legs",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 18,
+        name: "Deadlift",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 19,
+        name: "Pullup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
+    },
+    {
+        id: 20,
+        name: "Pushup",
+        description: "Straight, rigid back, lift bar up and down - for back",
+        exerciseType: "Compound",
+        difficulty: 6
     }
 ];
 
@@ -60,11 +165,12 @@ export default class DragDropList extends React.Component {
             colorMap[i] = getRandomColor();
             return i;
         }),
-        dragging: false
+        dragging: true
     };
 
     _panResponder: PanResponderInstance;
     point = new Animated.ValueXY();
+    scrollOffset = 0;
 
     constructor(props: any) {
         super(props);
@@ -82,7 +188,7 @@ export default class DragDropList extends React.Component {
                 this.setState({ dragging: true });
             },
             onPanResponderMove: (evt, gestureState) => {
-                const offset: number = 350;
+                const offset: number = 50;
                 this.point.setOffset({x: 0, y: -offset}); // hardcoded, but should be dynamic :)
 
                 let moveY;
@@ -107,6 +213,11 @@ export default class DragDropList extends React.Component {
               return true;
             }
           })
+    }
+
+    componentDidMount(): void {
+        // make initial graphical state deterministic -> "folds out" list immediately instead of having to drag manually
+        setTimeout(() => this.resetDrag(), 3);
     }
 
     resetDrag = () => {
@@ -138,16 +249,20 @@ export default class DragDropList extends React.Component {
         );
 
         return (
-            <View style={{width:"100%", minHeight: "50%"}}>
+            <View style={{width:"100%", minHeight: "100%"}}>
                 {dragging && <Animated.View style={{ backgroundColor: "black", 
                                         zIndex: 2,
                                         top: this.point.getLayout().top}}>
-                    {renderItem({item: _exercises[3]})}
+                    {renderItem({item:  _exercises[2]})}
                 </Animated.View>}
 
                 <FlatList
                     scrollEnabled={!dragging}
                     data={_exercises}
+                    onScroll={e => 
+                        this.scrollOffset = e.nativeEvent.contentOffset.y
+                    }
+                    scrollEventThrottle={16}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
                 />
