@@ -19,6 +19,22 @@ function getRandomColor(): string {
     return color;
 }
 
+function immutableMove(arr: any[], from: number, to: number) {
+    return arr.reduce((prev, current, idx, self) => {
+        if (from === to)
+            prev.push(current);
+        if (idx === from)
+            return prev;
+        if (from < to)
+            prev.push(current);
+        if (idx === to)
+            prev.push(self[from]);
+        if (from > to)
+            prev.push(current);
+        return prev;
+    }, []);
+}
+
 export default class DragDropList extends React.Component {
     state = {
         data: _exercises.map((_, i) => {
@@ -31,11 +47,13 @@ export default class DragDropList extends React.Component {
 
     _panResponder: PanResponderInstance;
     point = new Animated.ValueXY();
+    currentY = 0; 
     scrollOffset = 0;
-    elementOffset = 90;     // hardcoded, but should be dynamic :)
+    elementOffset = 105;     // hardcoded, but should be dynamic :)
     flatlistTopOffset = 0;  
     rowHeight = 0;
     currentIdx = -1;
+    active = false;
 
     constructor(props: any) {
         super(props);
@@ -49,9 +67,16 @@ export default class DragDropList extends React.Component {
               true,
       
             onPanResponderGrant: (evt, gestureState) => {
-                console.log(gestureState.y0);
+                // console.log(gestureState.y0);
                 this.currentIdx = this.yToIndex(gestureState.y0);
-                this.setState({ dragging: true, draggingIndex: this.currentIdx });
+                this.currentY = gestureState.y0;
+                Animated.event([{ y: this.point.y}], {useNativeDriver: false})({
+                    y: gestureState.y0 - this.rowHeight / 2
+                });
+                this.active = true;
+                this.setState({ dragging: true, draggingIndex: this.currentIdx }, () => {
+                    this.animateList();
+                });
             },
             onPanResponderMove: (evt, gestureState) => {
                 this.point.setOffset({x: 0, y: -this.elementOffset});
@@ -79,6 +104,25 @@ export default class DragDropList extends React.Component {
             }
           })
     }
+    
+    animateList = () => {
+        if (!this.active)
+            return;
+
+        requestAnimationFrame(() => {
+            // check y value to see if we need to reorder
+            const newIdx = this.yToIndex(this.currentY);
+            if (this.currentIdx !== newIdx) {
+                console.log("reordering")
+                this.setState({
+                    data: immutableMove(this.state.data, this.currentIdx, newIdx)
+                });
+                this.currentIdx = newIdx;
+            }
+
+            this.animateList();
+        });
+    }
 
     yToIndex = (y: number) => {
         return Math.floor(
@@ -92,13 +136,14 @@ export default class DragDropList extends React.Component {
     }
 
     resetDrag = () => {
+        this.active = false;
         this.setState({ dragging: false, draggingIndex: -1 });
     }
 
     render() {
         const { data, dragging, draggingIndex } = this.state;
 
-        const renderItem = ({ item, index }: any) => (
+        const renderItem = ({ item, index }: any, noPanResponder = false) => (
             <View 
                 onLayout={e => {this.rowHeight 
                                 = e.nativeEvent.layout.height}} 
@@ -108,7 +153,7 @@ export default class DragDropList extends React.Component {
                     flexDirection: "row",
                     opacity: draggingIndex === index ? 0 : 1
                 }}>
-                <View {...this._panResponder.panHandlers}
+                <View {...(noPanResponder ? {} : this._panResponder.panHandlers)}
                 style={{
                     padding: 3,
                     backgroundColor: colorMap[item.id - 1],
