@@ -22,24 +22,25 @@ function getRandomColor(): string {
 function immutableMove(arr: any[], from: number, to: number) {
     return arr.reduce((prev, current, idx, self) => {
         if (from === to)
-            prev.push(current);
+          prev.push(current);
         if (idx === from)
-            return prev;
+          return prev;
         if (from < to)
-            prev.push(current);
+          prev.push(current);
         if (idx === to)
-            prev.push(self[from]);
+          prev.push(self[from]);
         if (from > to)
-            prev.push(current);
+          prev.push(current);
+
         return prev;
-    }, []);
+      }, []);
 }
 
 export default class DragDropList extends React.Component {
     state = {
         data: _exercises.map((_, i) => {
             colorMap[i] = getRandomColor();
-            return i;
+            return _;
         }),
         dragging: true,
         draggingIndex: 0
@@ -60,11 +61,9 @@ export default class DragDropList extends React.Component {
         
         this._panResponder = PanResponder.create({
             onStartShouldSetPanResponder: (evt, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) =>
-              true,
+            onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) =>
-              true,
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       
             onPanResponderGrant: (evt, gestureState) => {
                 // console.log(gestureState.y0);
@@ -87,10 +86,11 @@ export default class DragDropList extends React.Component {
                 else
                     moveY = this.elementOffset;
 
+                this.currentY = moveY;
+
                 Animated.event([{y: this.point.y}],
                     {useNativeDriver: false})
                     ({y: moveY});
-                
             },
             onPanResponderTerminationRequest: (evt, gestureState) =>
                 false,
@@ -98,13 +98,14 @@ export default class DragDropList extends React.Component {
                 this.resetDrag();
             },
             onPanResponderTerminate: (evt, gestureState) => {
+                this.resetDrag();
             },
             onShouldBlockNativeResponder: (evt, gestureState) => {
               return true;
             }
           })
     }
-    
+
     animateList = () => {
         if (!this.active)
             return;
@@ -112,10 +113,12 @@ export default class DragDropList extends React.Component {
         requestAnimationFrame(() => {
             // check y value to see if we need to reorder
             const newIdx = this.yToIndex(this.currentY);
+            console.log(newIdx + " | " + this.currentIdx);
             if (this.currentIdx !== newIdx) {
-                console.log("reordering")
+                console.log("reordering");
                 this.setState({
-                    data: immutableMove(this.state.data, this.currentIdx, newIdx)
+                    data: immutableMove(this.state.data, this.currentIdx, newIdx),
+                    draggingIndex: newIdx
                 });
                 this.currentIdx = newIdx;
             }
@@ -126,7 +129,7 @@ export default class DragDropList extends React.Component {
 
     yToIndex = (y: number) => {
         return Math.floor(
-            (this.scrollOffset + y + this.flatlistTopOffset) 
+            (this.scrollOffset + y - this.flatlistTopOffset) 
             / this.rowHeight) - 2;
     }
 
@@ -175,12 +178,12 @@ export default class DragDropList extends React.Component {
                                         position: "absolute",
                                         width: "100%",
                                         top: this.point.getLayout().top}}>
-                    {renderItem({item:  _exercises[draggingIndex]})}
+                    {renderItem({item:  data[draggingIndex], index: -1})}
                 </Animated.View>}
 
                 <FlatList
                     scrollEnabled={!dragging}
-                    data={_exercises}
+                    data={data}
                     onScroll={e => this.scrollOffset 
                                    = e.nativeEvent.contentOffset.y}
                     onLayout={e => this.flatlistTopOffset = e.nativeEvent.layout.y}
