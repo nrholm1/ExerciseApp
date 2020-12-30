@@ -78,14 +78,12 @@ export default class DragDropList extends React.Component {
               true,
       
             onPanResponderGrant: (evt, gestureState) => {
+                console.log(gestureState.y0);
                 this.setState({ dragging: true });
             },
             onPanResponderMove: (evt, gestureState) => {
                 const offset: number = 350;
                 this.point.setOffset({x: 0, y: -offset}); // hardcoded, but should be dynamic :)
-
-                // log y
-                // console.log(gestureState.moveY);
 
                 let moveY;
                 if (gestureState.moveY - offset >= 0)
@@ -101,7 +99,7 @@ export default class DragDropList extends React.Component {
             onPanResponderTerminationRequest: (evt, gestureState) =>
                 false,
             onPanResponderRelease: (evt, gestureState) => {
-                this.setState({ dragging: false });
+                this.resetDrag();
             },
             onPanResponderTerminate: (evt, gestureState) => {
             },
@@ -109,6 +107,10 @@ export default class DragDropList extends React.Component {
               return true;
             }
           })
+    }
+
+    resetDrag = () => {
+        this.setState({ dragging: false });
     }
 
     render() {
@@ -137,11 +139,12 @@ export default class DragDropList extends React.Component {
 
         return (
             <View style={{width:"100%", minHeight: "50%"}}>
-                <Animated.View style={{ backgroundColor: "black", 
+                {dragging && <Animated.View style={{ backgroundColor: "black", 
                                         zIndex: 2,
                                         top: this.point.getLayout().top}}>
                     {renderItem({item: _exercises[3]})}
-                </Animated.View>
+                </Animated.View>}
+
                 <FlatList
                     scrollEnabled={!dragging}
                     data={_exercises}
