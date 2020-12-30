@@ -101,8 +101,7 @@ export default class DragDropList extends React.Component {
             onPanResponderTerminationRequest: (evt, gestureState) =>
                 false,
             onPanResponderRelease: (evt, gestureState) => {
-                // console.log("lol");
-                // this.setState({ dragging: false });
+                this.setState({ dragging: false });
             },
             onPanResponderTerminate: (evt, gestureState) => {
             },
