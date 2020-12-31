@@ -128,9 +128,14 @@ export default class DragDropList extends React.Component {
     }
 
     yToIndex = (y: number) => {
-        return Math.floor(
+        const value = Math.floor(
             (this.scrollOffset + y - this.flatlistTopOffset) 
             / this.rowHeight) - 2;
+
+        if (value > this.state.data.length - 1)
+            return this.state.data.length - 1;
+
+        return value;
     }
 
     componentDidMount(): void {
