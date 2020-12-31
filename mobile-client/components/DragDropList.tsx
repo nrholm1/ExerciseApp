@@ -113,9 +113,7 @@ export default class DragDropList extends React.Component {
         requestAnimationFrame(() => {
             // check y value to see if we need to reorder
             const newIdx = this.yToIndex(this.currentY);
-            console.log(newIdx + " | " + this.currentIdx);
             if (this.currentIdx !== newIdx) {
-                console.log("reordering");
                 this.setState({
                     data: immutableMove(this.state.data, this.currentIdx, newIdx),
                     draggingIndex: newIdx
