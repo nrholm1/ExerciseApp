@@ -130,7 +130,7 @@ export default class DragDropList extends React.Component {
     yToIndex = (y: number) => {
         const value = Math.floor(
             (this.scrollOffset + y - this.flatlistTopOffset) 
-            / this.rowHeight) - 2;
+            / this.rowHeight);// - 2;
 
         if (value > this.state.data.length - 1)
             return this.state.data.length - 1;
@@ -163,16 +163,17 @@ export default class DragDropList extends React.Component {
                 }}>
                 <View {...(noPanResponder ? {} : this._panResponder.panHandlers)}
                 style={{
-                    padding: 3,
+                    // padding: 3,
                     backgroundColor: colorMap[item.id - 1],
                     flex: 3
                 }}>
                     <Text style={{fontSize: 22}}>@</Text>
                 </View>
-                <Text style={{
+                {/* <Text style={{
                     textAlign: "center",
                     flex: 60
-                }}>{item.id}. {item.name}</Text>
+                }}>{item.id}. {item.name}</Text> */}
+                <ExerciseCard style={{minWidth: "90%", maxWidth: "100%"}} ex={item}/>
             </View>    
         );
 
