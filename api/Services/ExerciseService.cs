@@ -46,16 +46,17 @@ namespace ExerciseAPI.Services
             throw new AppException($"No Exercise with ID {id} found.");
         }
 
-        public async Task<Exercise> Update(int id, Exercise entityParam)
+        public async Task<Exercise> Update(Exercise entityParam)
         {
-            var entity = await _context.Exercises.FindAsync(id);
-            if (entity != null)
-                // loop over each property of entity and update in db if any of them have changed
-                foreach(var prop in entity.GetType()
-                                                   .GetProperties())
-                    if (prop.GetValue(entityParam, null) 
-                        != prop.GetValue(entity, null))
-                        prop.SetValue(entity, entityParam);
+            var entity = await _context.Exercises.FindAsync(entityParam.Id);
+            if (entity == null)
+                throw new AppException($"No exercise with id {entityParam.Id} was found.");
+            
+            // loop over each property of entity and update in db if any of them have changed
+            foreach (var prop in entity.GetType().GetProperties())
+                if (prop.GetValue(entityParam, null) 
+                    != prop.GetValue(entity, null))
+                    prop.SetValue(entity, entityParam);
 
             await _context.SaveChangesAsync();
             

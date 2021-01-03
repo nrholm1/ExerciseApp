@@ -51,5 +51,22 @@ namespace ExerciseAPI.Controllers
                 return BadRequest(new {message = e.Message});
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Exercise entityParam)
+        {
+            // mapping from model to entity here when creating models
+            entityParam.Id = id;
+
+            try
+            {
+                await _exerciseService.Update(entityParam);
+                return Ok();
+            }
+            catch (AppException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }
