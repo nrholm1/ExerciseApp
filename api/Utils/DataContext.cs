@@ -15,7 +15,7 @@ namespace ExerciseAPI.Utils
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(Configuration.GetConnectionString("SqlDbConnectionString"));
+            options.UseSqlServer(Configuration.GetConnectionString("PostgresConnectionString"));
         }
 
         public DbSet<Exercise> Exercises { get; set; }
