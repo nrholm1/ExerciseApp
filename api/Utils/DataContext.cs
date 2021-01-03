@@ -1,22 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using ExerciseAPI.Entities;
 
 namespace ExerciseAPI.Utils
 {
     public class DataContext : DbContext
     {
-        protected readonly IConfiguration Configuration;
-
-        public DataContext(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            options.UseSqlServer(Configuration.GetConnectionString("PostgresConnectionString"));
-        }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) {}
 
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Set> Sets { get; set; }
