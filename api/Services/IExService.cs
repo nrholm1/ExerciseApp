@@ -13,7 +13,7 @@ namespace ExerciseAPI.Services
         Task<T> Create(T entity);
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);
-        Task<T> Update(T entityParam);
+        Task<T> Update(int id, T entityParam);
         Task Delete(int id);
     }
 }
